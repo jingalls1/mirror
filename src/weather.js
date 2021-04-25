@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 import React from "react";
 import axios from "axios";
 import { WiDaySunny } from "weather-icons-react";
@@ -18,11 +20,15 @@ export default class Weather extends React.Component {
       sky: "",
       sunrise: 0,
       sunset: 0,
-      icoSize: 23
+      icoSize: "150"
     };
   }
 
   componentDidMount = () => {
+    this.fetcher()
+    this.interval = setInterval(() => {this.fetcher()}, 600000)
+  };
+  fetcher() {
     axios.get(weatherAPI).then(res =>
       this.setState({
         temp: res.data.main.temp,
@@ -31,7 +37,12 @@ export default class Weather extends React.Component {
         sunset: res.data.sys.sunset
       })
     );
-  };
+    let d = new Date();
+    console.log(`WEATHER updated: ${d.getHours()}:${d.getMinutes()}`)
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
 
   time = () => {
     let drise = new Date(this.state.sunrise * 1000);
@@ -52,7 +63,7 @@ export default class Weather extends React.Component {
 
   iconHandler = () => {
     if (this.time() === true) {
-      return <WiNightAltPartlyCloudy size={25} color="white" />;
+      return <WiNightAltPartlyCloudy size={this.state.icoSize} color="white" />;
     } else if (this.state.sky === "Clear") {
       return <WiDaySunny size={this.state.icoSize} color="white" />;
     } else if (this.state.sky === "Clouds") {
@@ -65,13 +76,26 @@ export default class Weather extends React.Component {
       return <WiDayShowers size={this.state.icoSize} color="white" />;
     } else return <span>&nbsp;</span>;
   };
+  rain() {
+    if (this.state.sky=== "Rain") {
+      return <span>It's rainin' man!</span>
+    } else {
+      return null
+    }
+  }
 
   render() {
     return (
-      <div style={{ fontSize: "1.5em" }}>
-        <br /> {this.iconHandler()}
-        {this.twoDecimals(this.state.temp)}&#176;{""}
-        <span style={{ fontSize: "10px" }} />
+      <div className="TableRight" style={{ fontSize: "4em" }}>
+        <div className="Row">
+        <div className="Cell">
+          <br /> {this.iconHandler()}
+          {this.rain()}
+          </div>
+        <div className="Cell" style={{fontWeight: "bold"}}>
+          {this.twoDecimals(this.state.temp)}&#176;{""}
+          </div>
+        </div>
       </div>
     );
   }

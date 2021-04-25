@@ -3,8 +3,11 @@ import Time from "./time.js";
 import Greeting from "./greeting.js";
 import Traffic from "./worktraffic.js";
 import News from "./news.js";
-import Weather from "./weather.js";
+//import Weather from "./weather.js";
 //import Spotify from "./spotify.js";
+import Cameras from "./cameras.js";
+import Holiday from "./holidays.js";
+//import Portland from "./portlandCam.js";
 
 const gif = "https://jandamarketing.com/wp-content/uploads/2016/10/earth.gif";
 
@@ -14,12 +17,13 @@ export default class App extends React.Component {
     this.state = {};
   }
   render() {
+    console.log('UPDATED CODE: [10/9/19 3:45] added portland cam from rev hall')
     return (
       <div className="App">
         <br style={{ lineHeight: 3 }} />
         <div className="rowC">
-          <div style={{ marginLeft: "12%" }}>
-            <img src={gif} height="75px" alt="Logo" />
+          <div style={{ marginLeft: "15%" }}>
+          {/*  <img src={gif} height="125px" alt="Logo" /> */}
           </div>
           {/* Start Greeting Table */}
           <div className="TableRight">
@@ -48,7 +52,29 @@ export default class App extends React.Component {
                 <Traffic />
               </div>
             </div>
+            <br/>
+            {/*<img style={{borderRadius: "30px"}}name="main" id="main" border="0" width="640" height="480" src="http://208.72.70.171/mjpg/video.mjpg"/>*/}
+            {/*Start IP Cameras*/}
+            <div className="Row">
+              <div className="Cell">
+              <Cameras/>
+              <Holiday/>
+              </div>
+            </div>
+
+            {/*Start Portland Skyline*/}
+            {/*
+            <div className="Row">
+              <div className="Cell">
+                <Portland/>
+              </div>
+            </div>
+          */}
+            {/*End Portland Skyline */}
+
+            {/*End IP Cameras*/}
           </div>
+
           {/* End Traffic Table*/}
           {/* Start Time Table*/}
           <div className="TableRight">
@@ -58,22 +84,14 @@ export default class App extends React.Component {
               </div>
             </div>
             <div className="Row" />
-            <Weather />
+            {/*<Weather />*/}
           </div>
 
           {/* End Time Table */}
         </div>
         <br />
         {/*Begin News*/}
-        <h2
-          style={{
-            textAlign: "left",
-            marginLeft: "25%",
-            textDecoration: "underline"
-          }}
-        >
-          News
-        </h2>
+
         <News />
         {/*End News*/}
       </div>

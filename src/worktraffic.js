@@ -17,15 +17,22 @@ export default class Traffic extends React.Component {
       trafficTime2: 0,
       trafficLevel2: "",
       trafficTime3: 0,
-      trafficLevel3: ""
+      trafficLevel3: "",
+      rsize: "2.7em",
+      hours: 0,
+      minutes: 9,
+      months: 0,
+      days: 0
     };
   }
 
   componentDidMount() {
-    this.interval = setInterval(
-      () => this.setState({ time: Date.now() }),
-      60000
-    );
+    this.fetcher();
+    this.interval = setInterval(() => {
+      this.fetcher();
+    }, 300000);
+  }
+  fetcher() {
     fetch(Hwy)
       .then(res => res.json())
       .then(result => {
@@ -62,20 +69,26 @@ export default class Traffic extends React.Component {
         //this.setState({ trafficTime1: result.resourceSets[0].resources[0].travelDuration})
       })
       .catch(error => console.log("Error is: " + error));
+      let d = new Date();
+      let days = d.getDate();
+      let months = d.getMonth();
+      let hours = d.getHours();
+      let minutes = d.getMinutes();
+      this.setState({hours, minutes, days, months});
   }
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
   coloredTraffic = level => {
-    if (level === "Mild") {
-      return "green";
-    } else if (level === "Medium") {
-      return "#cf8a00";
-    } else {
-      return "red";
-    }
-  };
+     if (level === "Mild") {
+       return "rgb(15, 219, 22, 0.3)";
+     } else if (level === "Medium") {
+       return 'rgb(236, 240, 36, 0.3)';
+     } else {
+       return 'rgba(201, 76, 76, 0.3)';
+     }
+   };
 
   twoDecimals = number => {
     let minutes = number / 60;
@@ -98,7 +111,10 @@ export default class Traffic extends React.Component {
             style={{
               textShadow: `2px 2px 4px ${this.coloredTraffic(
                 this.state.trafficLevel1
-              )}`
+              )}`,
+              backgroundColor: this.coloredTraffic(this.state.trafficLevel1),
+              borderRadius: "30px",
+              fontSize: `${this.state.rsize}`
             }}
           >
             {this.twoDecimals(this.state.trafficTime1)} minutes (
@@ -111,7 +127,10 @@ export default class Traffic extends React.Component {
             style={{
               textShadow: `2px 2px 4px ${this.coloredTraffic(
                 this.state.trafficLevel2
-              )}`
+              )}`,
+              backgroundColor: this.coloredTraffic(this.state.trafficLevel2),
+              borderRadius: "30px",
+              fontSize: `${this.state.rsize}`
             }}
           >
             {this.twoDecimals(this.state.trafficTime2)} minutes (
@@ -124,13 +143,17 @@ export default class Traffic extends React.Component {
             style={{
               textShadow: `2px 2px 4px ${this.coloredTraffic(
                 this.state.trafficLevel3
-              )}`
+              )}`,
+              backgroundColor: this.coloredTraffic(this.state.trafficLevel3),
+              borderRadius: "30px",
+              fontSize: `${this.state.rsize}`
             }}
           >
             {this.twoDecimals(this.state.trafficTime3)} minutes (
             {this.state.trafficLevel3} Traffic)
           </span>
         </div>
+        <h2 style={{fontSize: "0.75em"}}>Refreshed: {this.state.months}/{this.state.days} {this.state.hours}:{this.state.minutes} </h2>
       </div>
     );
   }

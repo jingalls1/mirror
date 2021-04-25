@@ -3,26 +3,34 @@ import React from "react";
 export default class Greeting extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {message: ""};
     }
 
-    greetingFunc = () => {
+    componentDidMount() {
+        this.greet();
+        this.interval = setInterval(() => {this.greet()}, 60000);
+    }
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+
+    greet = () => {
         let d = new Date();
         let hours = d.getHours()
-        if (hours < 12 ) {
-            return <div className="greeting">&nbsp;&nbsp;&nbsp;Good Morning, Jacob</div>
+        if (hours < 12) {
+            this.setState({message: "Good Morning, Pumpkin Court"})
         } else if (hours >= 12 && hours < 17) {
-            return <div className="greeting">&nbsp;&nbsp;&nbsp;Good Afternoon, Jacob</div>
+            this.setState({message: "Good Afternoon, Pumpkin Court"})
         } else {
-            return <div className="greeting">&nbsp;&nbsp;&nbsp;Good Evening, Jacob</div>
+            this.setState({message: "Good Evening, Pumpkin Court"})
         }
     }
-
 
     render() {
         return(
             <div>
-                {this.greetingFunc()}
+                <div className="greeting">&nbsp;&nbsp;&nbsp;{this.state.message}</div>
             </div>
         )
     }

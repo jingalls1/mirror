@@ -35,7 +35,7 @@ export default class Time extends React.Component {
       return (
         <span>
           <span>Portland Time</span>
-          <div style={{ fontWeight: "bold", fontSize: "2em" }}>
+          <div style={{ fontWeight: "bold", fontSize: "6em" }}>
             {hours}:{this.zeroFunc(minutes)}:
             <span style={{ fontSize: ".5em" }}>
               {this.zeroFunc(secs)}&nbsp;am
@@ -47,8 +47,8 @@ export default class Time extends React.Component {
       let hours2 = hours - 12;
       return (
         <span>
-          <span>Portland Time:</span>
-          <div style={{ fontWeight: "bold", fontSize: "2em" }}>
+          <span style={{fontSize: "1.2em"}}>Portland Time:</span>
+          <div style={{ fontWeight: "bold", fontSize: "6em" }}>
             {hours2}:{this.zeroFunc(minutes)}:
             <span style={{ fontSize: ".5em" }}>
               {this.zeroFunc(secs)}&nbsp;pm
